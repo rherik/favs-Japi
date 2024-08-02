@@ -36,6 +36,21 @@ public class AlbumServices {
         album.setRate(4);
         return album;
     }
+
+    public Album create (Album album) {
+        logger.info("Creating one album.");
+        return album;
+    }
+
+    public Album update (Album album) {
+        logger.info("updating one album.");
+        return album;
+    }
+
+    public void delete (String id) {
+        logger.info("deleting one album.");
+    }
+
     private Album mockAlbum(int i) {
         Album album = new Album();
         album.setId(counter.incrementAndGet());

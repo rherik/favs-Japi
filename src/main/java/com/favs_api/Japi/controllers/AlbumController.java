@@ -19,10 +19,30 @@ public class AlbumController {
     public List<Album> findAll(){
         return service.findAll();
     }
+
     @RequestMapping(value = "/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Album findById(@PathVariable(value = "id") String id) throws Exception {
         return service.findById(id);
+    }
+
+    @RequestMapping(method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Album create(@RequestBody Album album){
+        return service.create(album);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Album update(@RequestBody Album album){
+        return service.create(album);
+    }
+    @RequestMapping(value = "/{id}",
+            method = RequestMethod.DELETE)
+    public void delete(@PathVariable (value = "id") String id){
+        service.delete(id);
     }
 }
