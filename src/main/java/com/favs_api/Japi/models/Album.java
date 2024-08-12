@@ -1,17 +1,31 @@
 package com.favs_api.Japi.models;
 
+import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.util.Objects;
 
+@Entity
+@Table(name="albuns")
 public class Album implements Serializable {
     private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, length = 225)
     private String name;
+    @Column(length = 80)
     private String release;
+    @Column(length = 80)
     private String author;
+    @Column(length = 225)
     private String description;
+    @Column(length = 80)
     private String kind;
+    @Column
     private String foto;
+    @Column
     private Integer rate;
 
     public Album() {}
