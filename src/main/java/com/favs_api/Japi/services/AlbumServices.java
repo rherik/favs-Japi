@@ -1,6 +1,9 @@
 package com.favs_api.Japi.services;
 
+import com.favs_api.Japi.exceptions.ResourceNotFoundException;
 import com.favs_api.Japi.models.Album;
+import com.favs_api.Japi.repositories.AlbumRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,59 +13,51 @@ import java.util.logging.Logger;
 
 @Service
 public class AlbumServices {
-    private final AtomicLong counter = new AtomicLong();
+
     private Logger logger = Logger.getLogger(AlbumServices.class.getName());
+
+    @Autowired
+    AlbumRepository repository;
 
     public List<Album> findAll(){
         logger.info("Finding all albuns.");
-        List<Album> albuns = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            Album album = mockAlbum(i);
-            albuns.add(album);
-        }
-        return albuns;
+
+        return repository.findAll();
     }
 
-    public Album findById(String id){
+    public Album findById(Long id){
         logger.info("Finding one album.");
-        Album album = new Album();
-        album.setId(counter.incrementAndGet());
-        album.setName("Sobre Crianças, Quadris, Pesadelos e Lições de Casa...");
-        album.setRelease("2015");
-        album.setAuthor("Emicida");
-        album.setDescription("é o segundo álbum de estúdio do brasileiro");
-        album.setKind("Rap");
-        album.setFoto("None");
-        album.setRate(4);
-        return album;
+
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No records found"));
     }
 
     public Album create (Album album) {
         logger.info("Creating one album.");
-        return album;
+        return repository.save(album);
     }
 
     public Album update (Album album) {
         logger.info("updating one album.");
-        return album;
+
+        var entity = repository.findById(album.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("No records found"));
+
+        entity.setName(album.getName());
+        entity.setRelease(album.getRelease());
+        entity.setAuthor(album.getAuthor());
+        entity.setDescription(album.getDescription());
+        entity.setKind(album.getKind());
+        entity.setFoto(album.getFoto());
+        entity.setRate(album.getRate());
+
+        return repository.save(album);
     }
 
-    public void delete (String id) {
+    public void delete (Long id) {
         logger.info("deleting one album.");
+        var entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No records found"));
+        repository.delete(entity);
     }
-
-    private Album mockAlbum(int i) {
-        Album album = new Album();
-        album.setId(counter.incrementAndGet());
-        album.setName("Album name" + i);
-        album.setRelease("Release date" + i);
-        album.setAuthor("Author name" + i);
-        album.setDescription("Some description" + i);
-        album.setKind("Kind" + i);
-        album.setFoto("Some photo" + i);
-        album.setRate(0);
-        return album;
-
-    }
-
 }
