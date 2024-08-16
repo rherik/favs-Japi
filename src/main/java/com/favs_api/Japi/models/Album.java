@@ -19,7 +19,7 @@ public class Album implements Serializable {
     private String release;
     @Column(length = 80)
     private String author;
-    @Column(length = 225)
+    @Column(length = 500)
     private String description;
     @Column(length = 80)
     private String kind;
