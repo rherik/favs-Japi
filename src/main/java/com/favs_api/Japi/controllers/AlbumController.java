@@ -1,7 +1,8 @@
 package com.favs_api.Japi.controllers;
 
-import com.favs_api.Japi.models.AlbumVO;
-import com.favs_api.Japi.services.AlbumVOServices;
+import com.favs_api.Japi.data_vo_v1.AlbumVO;
+import com.favs_api.Japi.data_vo_v2.AlbumVOV2;
+import com.favs_api.Japi.services.AlbumServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/album")
-public class AlbumVOController {
+@RequestMapping("/album/v1")
+public class AlbumController {
     @Autowired
-    private AlbumVOServices service;
+    private AlbumServices service;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<AlbumVO> findAll(){
@@ -30,6 +31,12 @@ public class AlbumVOController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public AlbumVO create(@RequestBody AlbumVO album){
         return service.create(album);
+    }
+
+    @PostMapping(value = "/v2", produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public AlbumVOV2 createV2(@RequestBody AlbumVOV2 album){
+        return service.createV2(album);
     }
 
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE,
